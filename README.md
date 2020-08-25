@@ -19,6 +19,18 @@ Add it in the yoor app dependencies:
 }</pre>
 </br>
 
+Usage:</br>
+
+<pre>NotificationMan
+        .Builder(context, "the activity's path that you want to open when the notification is clicked")
+        .setTitle("test title") // optional
+        .setDescription("test desc") // optional
+        .setThumbnailImageUrl("image url") // optional
+        .setTimeInterval(10L) // needs secs - default is 5 secs
+        .setNotificationType(NotificationMan.NOTIFICATION_TYPE_IMAGE) // optional - default type is TEXT
+        .fire()</pre> 
+
+
 
 App is in the foreground:</br>
 ![](https://media1.giphy.com/media/ciweGllR6JM5e2xE4Y/giphy.gif)</br>
