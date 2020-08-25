@@ -16,7 +16,7 @@ class LocalNotificationPostWorker(private val context: Context, workerParams: Wo
 
         const val LOCAL_NOTIFICATION_DEFAULT_TIME_INTERVAL = 5L // 5 secs
 
-        const val NOTIFICATION_CLASS_NAME_KEY = "notification_class_name_key"
+        const val NOTIFICATION_CLASS_PATH_KEY = "notification_class_name_key"
         const val NOTIFICATION_TITLE_KEY = "notification_title_key"
         const val NOTIFICATION_DESC_KEY = "notification_desc_key"
         const val NOTIFICATION_THUMBNAIL_IMAGE_KEY = "notification_thumbnail_image_key"
@@ -37,14 +37,14 @@ class LocalNotificationPostWorker(private val context: Context, workerParams: Wo
     }
 
     private fun enqueueNotification() {
-        val className = inputData.getString(NOTIFICATION_CLASS_NAME_KEY)
+        val classPath = inputData.getString(NOTIFICATION_CLASS_PATH_KEY)
         val title = inputData.getString(NOTIFICATION_TITLE_KEY)
         val desc = inputData.getString(NOTIFICATION_DESC_KEY)
         val thumbnailImageUrl = inputData.getString(NOTIFICATION_THUMBNAIL_IMAGE_KEY)
         val timeInternal = inputData.getLong(NOTIFICATION_TIME_INTERVAL_KEY, LOCAL_NOTIFICATION_DEFAULT_TIME_INTERVAL)
         val type = inputData.getInt(NOTIFICATION_TYPE_KEY, NotificationMan.NOTIFICATION_TYPE_TEXT)
         val data = Data.Builder().apply {
-            putString(NOTIFICATION_CLASS_NAME_KEY, className)
+            putString(NOTIFICATION_CLASS_PATH_KEY, classPath)
             putString(NOTIFICATION_TITLE_KEY, title)
             putString(NOTIFICATION_DESC_KEY, desc)
             putString(NOTIFICATION_THUMBNAIL_IMAGE_KEY, thumbnailImageUrl)

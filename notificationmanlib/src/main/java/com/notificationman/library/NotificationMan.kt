@@ -15,7 +15,7 @@ class NotificationMan {
 
     data class Builder(
         private val context: Context,
-        private var classNameWillBeOpen: String,
+        private val classPathWillBeOpen: String,
         private var title: String? = null,
         private var desc: String? = null,
         private var thumbnailImageUrl: String? = null,
@@ -31,7 +31,7 @@ class NotificationMan {
 
         private fun fireNotification() {
             val data = Data.Builder().apply {
-                putString(LocalNotificationPostWorker.NOTIFICATION_CLASS_NAME_KEY, classNameWillBeOpen)
+                putString(LocalNotificationPostWorker.NOTIFICATION_CLASS_PATH_KEY, classPathWillBeOpen)
                 putString(LocalNotificationPostWorker.NOTIFICATION_TITLE_KEY, title)
                 putString(LocalNotificationPostWorker.NOTIFICATION_DESC_KEY, desc)
                 putString(LocalNotificationPostWorker.NOTIFICATION_THUMBNAIL_IMAGE_KEY, thumbnailImageUrl)

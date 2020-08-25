@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fireNotificationMan() = NotificationMan
-        .Builder(this, this::class.java.simpleName)
+        .Builder(this, "com.notification.man.MainActivity") // make sure class path match with your project architecture
         .setTitle("test title") // optional
         .setDescription("test desc") // optional
         .setThumbnailImageUrl("https://digit-1.com/wp-content/uploads/sites/13/2019/10/Digit-1-News-How-to-enable-the-battery-percentage-icon-in.jpg") // optional

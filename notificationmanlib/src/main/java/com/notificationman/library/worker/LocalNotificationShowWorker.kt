@@ -23,12 +23,12 @@ class LocalNotificationShowWorker(private val context: Context, workerParams: Wo
     override fun doWork(): Result {
         return try {
             val notificationID = System.currentTimeMillis().toInt()
-            val className = inputData.getString(LocalNotificationPostWorker.NOTIFICATION_CLASS_NAME_KEY)
+            val classPath = inputData.getString(LocalNotificationPostWorker.NOTIFICATION_CLASS_PATH_KEY)
             val title = inputData.getString(LocalNotificationPostWorker.NOTIFICATION_TITLE_KEY)
             val desc = inputData.getString(LocalNotificationPostWorker.NOTIFICATION_DESC_KEY)
             val thumbnailImageUrl = inputData.getString(LocalNotificationPostWorker.NOTIFICATION_THUMBNAIL_IMAGE_KEY)
             val type = inputData.getInt(LocalNotificationPostWorker.NOTIFICATION_TYPE_KEY, NotificationMan.NOTIFICATION_TYPE_TEXT)
-            val notification = getNotification(context, className!!, title, desc, thumbnailImageUrl, notificationID, type)
+            val notification = getNotification(context, classPath!!, title, desc, thumbnailImageUrl, notificationID, type)
             Log.d(TAG, "created local notification -> $notification")
             showNotification(context, notification, notificationID)
             Result.success()
@@ -38,11 +38,9 @@ class LocalNotificationShowWorker(private val context: Context, workerParams: Wo
         }
     }
 
-    private fun getNotification(context: Context, className: String, title: String?, body: String?, thumbnailImageUrl: String?, notificationID: Int, notificationType: Int): Notification {
-        val appPackageName = context.packageName
-        val classPathWillBeOpen = appPackageName.plus(".").plus(className)
+    private fun getNotification(context: Context, classPath: String, title: String?, body: String?, thumbnailImageUrl: String?, notificationID: Int, notificationType: Int): Notification {
         val intent = Intent(Intent.ACTION_MAIN).apply {
-            component = ComponentName(appPackageName, classPathWillBeOpen)
+            component = ComponentName(context.packageName, classPath)
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         }
         val pendingIntent = PendingIntent.getActivity(context, notificationID, intent, PendingIntent.FLAG_ONE_SHOT)
