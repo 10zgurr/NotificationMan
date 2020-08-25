@@ -1,0 +1,3 @@
+include ':notificationmanlib'
+include ':app'
+rootProject.name = "NotificationMan"
