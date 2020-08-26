@@ -1,6 +1,6 @@
 # Notification Man
 
-This library's super power is firing scheduled local notifications. Even the app is killed.
+This library's superpower is firing scheduled local notifications. Even the app is killed.
 You can easily implement it to your android project:</br>
 </br>
 Add it in your root build.gradle at the end of repositories:
@@ -12,7 +12,7 @@ Add it in your root build.gradle at the end of repositories:
     }
 }</pre> 
 
-Add it in the yoor app dependencies:
+Add it in the your app dependencies:
 </br>
 <pre>dependencies {
   implementation 'com.github.theozgurr:NotificationMan:v1.0.2'
@@ -32,15 +32,15 @@ Usage:</br>
 
 
 
-App is in the foreground:</br>
+The app is in the foreground:</br>
 ![](https://media1.giphy.com/media/ciweGllR6JM5e2xE4Y/giphy.gif)</br>
 </br>
 Exit the app:</br>
 ![](https://media0.giphy.com/media/JR6RcCu6pbEFNBMKtZ/giphy.gif)</br>
 </br>
-App is at the background:</br>
+The app is in the background:</br>
 ![](https://media1.giphy.com/media/RhBhUBYq771pIdHnlv/giphy.gif)</br>
 </br>
-App is killed:</br>
+The app is killed:</br>
 ![](https://media1.giphy.com/media/VFNh8xq0e8VFxdJ3Wa/giphy.gif)</br>
 </br>
