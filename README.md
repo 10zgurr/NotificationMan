@@ -15,7 +15,7 @@ Add it in your root build.gradle at the end of repositories:
 Add it in the your app dependencies:
 </br>
 <pre>dependencies {
-  implementation 'com.github.theozgurr:NotificationMan:v1.0.2'
+  implementation 'com.github.theozgurr:NotificationMan:v1.0.3'
 }</pre>
 </br>
 
@@ -32,15 +32,15 @@ Usage:</br>
 
 
 
-The app is in the foreground:</br>
+App is in the foreground:</br>
 ![](https://media1.giphy.com/media/ciweGllR6JM5e2xE4Y/giphy.gif)</br>
 </br>
 Exit the app:</br>
 ![](https://media0.giphy.com/media/JR6RcCu6pbEFNBMKtZ/giphy.gif)</br>
 </br>
-The app is in the background:</br>
+App is in the background:</br>
 ![](https://media1.giphy.com/media/RhBhUBYq771pIdHnlv/giphy.gif)</br>
 </br>
-The app is killed:</br>
+App is killed:</br>
 ![](https://media1.giphy.com/media/VFNh8xq0e8VFxdJ3Wa/giphy.gif)</br>
 </br>
