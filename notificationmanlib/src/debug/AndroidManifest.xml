@@ -1,0 +1,13 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.notificationman.library">
+
+    <application
+        android:name=".FakeNotificationManApp">
+
+        <activity
+            android:name=".FakeMainActivity"
+            android:exported="false" />
+
+    </application>
+
+</manifest>

@@ -36,9 +36,20 @@ class LocalNotificationShowWorker(
             val desc = inputData.getString(LocalNotificationPostWorker.DESC_KEY)
             val thumbnailUrl = inputData.getString(LocalNotificationPostWorker.THUMBNAIL_URL_KEY)
             val type = inputData.getInt(LocalNotificationPostWorker.TYPE_KEY, NotificationTypes.TEXT.type)
-            val notification = createNotification(context, classPath!!, title, desc, thumbnailUrl, notificationID, type)
-            Log.d(TAG, "created local notification -> $notification")
-            showNotification(context, notification, notificationID)
+            val notification = createNotification(
+                context = context,
+                classPath = classPath!!,
+                title = title,
+                body = desc,
+                thumbnailUrl = thumbnailUrl,
+                notificationID = notificationID,
+                notificationType = type
+            )
+            showNotification(
+                context = context,
+                notification = notification,
+                notificationID = notificationID
+            )
             Result.success()
         } catch (e: Exception) {
             Log.e(TAG, "local notification show worker has failed: ${e.message}")
