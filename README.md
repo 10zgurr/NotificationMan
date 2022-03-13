@@ -27,7 +27,7 @@ Usage:</br>
         .setDescription("test desc") // optional
         .setThumbnailUrl("image url") // optional
         .setTimeInterval(10L) // needs secs - default is 5 secs
-        .setNotificationType(NotificationMan.NOTIFICATION_TYPE_IMAGE) // optional - default type is TEXT
+        .setNotificationType(NotificationTypes.IMAGE.type) // optional - default type is TEXT
         .fire()</pre> 
 
 
