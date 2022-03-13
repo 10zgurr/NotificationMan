@@ -1,25 +1,42 @@
 package com.notification.man
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.notification.man.databinding.ActivityMainBinding
 import com.notificationman.library.NotificationMan
-import kotlinx.android.synthetic.main.activity_main.*
+import com.notificationman.library.NotificationTypes
 
 class MainActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        button_fire.setOnClickListener { fireNotificationMan() }
+    companion object {
+        private const val THUMBNAIL_URL =
+            "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Android_robot.max-500x500.png"
     }
 
-    private fun fireNotificationMan() = NotificationMan
-        .Builder(this, "com.notification.man.MainActivity") // make sure class path match with your project architecture
-        .setTitle(edit_text_title.text.toString().trim()) // optional
-        .setDescription(edit_text_desc.text.toString().trim()) // optional
-        .setThumbnailImageUrl("https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Android_robot.max-500x500.png") // optional
-        .setTimeInterval(edit_text_time_interval.text.toString().trim().toLong()) // needs secs - default is 5 secs
-        .setNotificationType(NotificationMan.NOTIFICATION_TYPE_IMAGE) // optional - default type is TEXT
-        .fire()
+    private lateinit var binding: ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.buttonFire.setOnClickListener {
+            fireNotificationMan()
+        }
+    }
+
+    private fun fireNotificationMan() {
+        val classPath = "com.notification.man.MainActivity" // make sure class path match with your project architecture
+        val title = binding.editTextTitle.text.toString().trim()
+        val desc = binding.editTextDesc.text.toString().trim()
+        val timeInterval = binding.editTextTimeInterval.text.toString().trim().toLong()
+        NotificationMan
+            .Builder(this, classPath)
+            .setTitle(title) // optional
+            .setDescription(desc) // optional
+            .setThumbnailUrl(THUMBNAIL_URL) // optional
+            .setTimeInterval(timeInterval) // needs secs - default is 5 secs
+            .setNotificationType(NotificationTypes.IMAGE.type) // optional - default type is TEXT
+            .fire()
+    }
 }
