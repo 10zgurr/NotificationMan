@@ -15,7 +15,7 @@ Add it in your root build.gradle at the end of repositories:
 Add it in the your app dependencies:
 </br>
 <pre>dependencies {
-  implementation 'com.github.theozgurr:NotificationMan:v1.0.4'
+  implementation 'com.github.theozgurr:NotificationMan:v1.0.5'
 }</pre>
 </br>
 
