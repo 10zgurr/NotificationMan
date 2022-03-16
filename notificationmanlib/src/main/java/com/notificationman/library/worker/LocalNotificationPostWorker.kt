@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 class LocalNotificationPostWorker(
     private val context: Context,
     workerParams: WorkerParameters
-) : CoroutineWorker(context, workerParams) {
+) : Worker(context, workerParams) {
 
     companion object {
         private const val TAG = "LNPostWorker"
@@ -24,7 +24,7 @@ class LocalNotificationPostWorker(
         const val TYPE_KEY = "type_key"
     }
 
-    override suspend fun doWork(): Result {
+    override fun doWork(): Result {
         return try {
             enqueueNotification()
             Result.success()

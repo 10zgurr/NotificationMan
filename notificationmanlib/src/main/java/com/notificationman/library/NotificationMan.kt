@@ -27,7 +27,9 @@ class NotificationMan {
         fun setThumbnailUrl(thumbnailUrl: String?) = apply { this.thumbnailUrl = thumbnailUrl }
         fun setTimeInterval(timeInterval: Long) = apply { this.timeInterval = timeInterval }
         fun setNotificationType(type: Int) = apply { this.type = type }
-        fun fire() = fireNotification()
+        fun fire() {
+            fireNotification()
+        }
 
         private fun fireNotification() {
             val data = Data.Builder().apply {

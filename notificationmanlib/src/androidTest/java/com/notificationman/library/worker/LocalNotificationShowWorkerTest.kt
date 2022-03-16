@@ -24,52 +24,48 @@ class LocalNotificationShowWorkerTest {
     @Test
     @Throws(Exception::class)
     fun test_localNotificationShowWorker_returns_success() {
-        runBlocking {
-            // Define input data
-            val classPath = "com.notification.man.MainActivity"
-            val title = "fake_title"
-            val desc = "fake_desc"
-            val timeInterval = 2
-            val input = workDataOf(
-                LocalNotificationPostWorker.CLASS_PATH_KEY to classPath,
-                LocalNotificationPostWorker.TITLE_KEY to title,
-                LocalNotificationPostWorker.DESC_KEY to desc,
-                LocalNotificationPostWorker.TIME_INTERVAL_KEY to timeInterval
-            )
+        // Define input data
+        val classPath = "com.notification.man.MainActivity"
+        val title = "fake_title"
+        val desc = "fake_desc"
+        val timeInterval = 2
+        val input = workDataOf(
+            LocalNotificationPostWorker.CLASS_PATH_KEY to classPath,
+            LocalNotificationPostWorker.TITLE_KEY to title,
+            LocalNotificationPostWorker.DESC_KEY to desc,
+            LocalNotificationPostWorker.TIME_INTERVAL_KEY to timeInterval
+        )
 
-            val worker = TestWorkerBuilder<LocalNotificationShowWorker>(
-                context = context,
-                executor = newSingleThreadExecutor(),
-                inputData = input
-            ).build()
+        val worker = TestWorkerBuilder<LocalNotificationShowWorker>(
+            context = context,
+            executor = newSingleThreadExecutor(),
+            inputData = input
+        ).build()
 
-            val result = worker.doWork()
-            assertThat(result, `is`(ListenableWorker.Result.success()))
-        }
+        val result = worker.doWork()
+        assertThat(result, `is`(ListenableWorker.Result.success()))
     }
 
     @Test
     @Throws(Exception::class)
     fun test_localNotificationShowWorker_returns_failure() {
-        runBlocking {
-            // Define input data without class path which should not be null
-            val title = "fake_title"
-            val desc = "fake_desc"
-            val timeInterval = 2
-            val input = workDataOf(
-                LocalNotificationPostWorker.TITLE_KEY to title,
-                LocalNotificationPostWorker.DESC_KEY to desc,
-                LocalNotificationPostWorker.TIME_INTERVAL_KEY to timeInterval
-            )
+        // Define input data without class path which should not be null
+        val title = "fake_title"
+        val desc = "fake_desc"
+        val timeInterval = 2
+        val input = workDataOf(
+            LocalNotificationPostWorker.TITLE_KEY to title,
+            LocalNotificationPostWorker.DESC_KEY to desc,
+            LocalNotificationPostWorker.TIME_INTERVAL_KEY to timeInterval
+        )
 
-            val worker = TestWorkerBuilder<LocalNotificationShowWorker>(
-                context = context,
-                executor = newSingleThreadExecutor(),
-                inputData = input
-            ).build()
+        val worker = TestWorkerBuilder<LocalNotificationShowWorker>(
+            context = context,
+            executor = newSingleThreadExecutor(),
+            inputData = input
+        ).build()
 
-            val result = worker.doWork()
-            assertThat(result, `is`(ListenableWorker.Result.failure()))
-        }
+        val result = worker.doWork()
+        assertThat(result, `is`(ListenableWorker.Result.failure()))
     }
 }
