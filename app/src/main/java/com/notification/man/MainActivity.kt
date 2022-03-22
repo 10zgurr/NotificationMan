@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         val classPath = "com.notification.man.MainActivity" // make sure class path match with your project architecture
         val title = binding.editTextTitle.text.toString().trim()
         val desc = binding.editTextDesc.text.toString().trim()
-        val timeInterval = binding.editTextTimeInterval.text.toString().trim().toLong()
+        val timeInterval = binding.editTextTimeInterval.text.toString().trim().toLongOrNull()
         NotificationMan
             .Builder(this, classPath)
             .setTitle(title) // optional

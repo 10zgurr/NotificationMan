@@ -25,7 +25,7 @@ class NotificationMan {
         fun setTitle(title: String) = apply { this.title = title }
         fun setDescription(desc: String) = apply { this.desc = desc }
         fun setThumbnailUrl(thumbnailUrl: String?) = apply { this.thumbnailUrl = thumbnailUrl }
-        fun setTimeInterval(timeInterval: Long) = apply { this.timeInterval = timeInterval }
+        fun setTimeInterval(timeInterval: Long?) = apply { this.timeInterval = timeInterval }
         fun setNotificationType(type: Int) = apply { this.type = type }
         fun fire() {
             fireNotification()

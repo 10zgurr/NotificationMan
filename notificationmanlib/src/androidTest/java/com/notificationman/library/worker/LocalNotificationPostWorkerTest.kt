@@ -4,14 +4,14 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.work.ListenableWorker
-import androidx.work.testing.TestListenableWorkerBuilder
+import androidx.work.testing.TestWorkerBuilder
 import androidx.work.workDataOf
-import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.concurrent.Executors.newSingleThreadExecutor
 
 @RunWith(AndroidJUnit4::class)
 class LocalNotificationPostWorkerTest {
@@ -38,8 +38,9 @@ class LocalNotificationPostWorkerTest {
             LocalNotificationPostWorker.TIME_INTERVAL_KEY to timeInterval
         )
 
-        val worker = TestListenableWorkerBuilder<LocalNotificationPostWorker>(
+        val worker = TestWorkerBuilder<LocalNotificationPostWorker>(
             context = context,
+            executor = newSingleThreadExecutor(),
             inputData = input
         ).build()
 
