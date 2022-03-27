@@ -19,8 +19,7 @@ Add it in the your app dependencies:
 }</pre>
 </br>
 
-Usage:</br>
-
+Firing:</br>
 <pre>NotificationMan
         .Builder(context, "the activity's path that you want to open when the notification is clicked")
         .setTitle("test title") // optional
@@ -29,6 +28,14 @@ Usage:</br>
         .setTimeInterval(10L) // needs secs - default is 5 secs
         .setNotificationType(NotificationTypes.IMAGE.type) // optional - default type is TEXT
         .fire()</pre> 
+        
+Canceling the latest added worker in the queue:</br>
+<pre>NotificationMan
+        .coolDownLatestFire(context)</pre>
+        
+Canceling all workers:</br>
+<pre>NotificationMan
+        .coolDownAllFires(context)</pre>
 
 
 
