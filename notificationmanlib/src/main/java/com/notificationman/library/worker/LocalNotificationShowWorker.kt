@@ -7,28 +7,32 @@ import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat.IMPORTANCE_MAX
-import androidx.work.Worker
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.notificationman.library.NotificationTypes
 import com.notificationman.library.R
-import com.notificationman.library.utils.getBitmapFromURL
-import com.notificationman.library.utils.getCroppedBitmap
+import com.notificationman.library.datastore.AppDataStoreImpl
+import com.notificationman.library.extensions.dataStore
+import com.notificationman.library.extensions.getBitmapFromURL
+import com.notificationman.library.extensions.getCroppedBitmap
+import com.notificationman.library.model.NotificationTypes
+import java.util.*
 
 class LocalNotificationShowWorker(
     private val context: Context,
-    workerParams: WorkerParameters
-) : Worker(context, workerParams) {
+    private val workerParams: WorkerParameters
+) : CoroutineWorker(context, workerParams) {
 
     companion object {
         private const val TAG = "LNShowWorker"
     }
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
         return try {
             val notificationID = System.currentTimeMillis().toInt()
             val classPath = inputData.getString(LocalNotificationPostWorker.CLASS_PATH_KEY)
@@ -49,6 +53,9 @@ class LocalNotificationShowWorker(
                 context = context,
                 notification = notification,
                 notificationID = notificationID
+            )
+            deleteWorkerId(
+                id = workerParams.id
             )
             Result.success()
         } catch (e: Exception) {
@@ -81,55 +88,58 @@ class LocalNotificationShowWorker(
         )
         val channelId = context.getString(R.string.default_notification_channel_id)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder = NotificationCompat.Builder(context, channelId)
+        val notificationBuilder = NotificationCompat
+            .Builder(context, channelId)
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setDefaults(NotificationCompat.DEFAULT_VIBRATE or NotificationCompat.DEFAULT_LIGHTS or NotificationCompat.DEFAULT_SOUND)
             .setColorized(true)
-            .setContentTitle(title ?: context.getString(R.string.app_name))
-            .setContentText(body ?: "")
+            .setContentTitle(
+                if (title.isNullOrBlank().not())
+                    title
+                else
+                    context.getString(R.string.app_name)
+            )
+            .setContentText(body)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
-            .setPriority(
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                    IMPORTANCE_MAX
-                else
-                    Notification.PRIORITY_MAX
-            )
-        if (Build.VERSION.SDK_INT >= 21)
-            notificationBuilder.setVibrate(longArrayOf(0))
+            .setVibrate(longArrayOf(0))
+            .setPriority(IMPORTANCE_MAX)
 
-        return if (thumbnailUrl.isNullOrEmpty()) {
+        return if (thumbnailUrl.isNullOrBlank()) {
             notificationBuilder
-                .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+                .setStyle(getBigTextNotificationStyle(body))
                 .build()
         } else {
             val roundedBitmap = thumbnailUrl
                 .getBitmapFromURL()
                 ?.getCroppedBitmap()
-            roundedBitmap?.let { notificationBuilder.setLargeIcon(it) }
-            when (notificationType) {
+            val style = when (notificationType) {
                 NotificationTypes.TEXT.type ->
-                    notificationBuilder
-                        .setStyle(
-                            NotificationCompat
-                                .BigTextStyle()
-                                .bigText(body)
-                        )
+                    getBigTextNotificationStyle(body)
                 NotificationTypes.IMAGE.type ->
-                    roundedBitmap?.let {
-                        notificationBuilder
-                            .setStyle(
-                                NotificationCompat
-                                    .BigPictureStyle()
-                                    .bigPicture(it)
-                                    .bigLargeIcon(null)
-                            )
-                    }
+                    getBigPictureNotificationStyle(roundedBitmap)
+                else -> null
             }
-            notificationBuilder.build()
+            notificationBuilder
+                .setLargeIcon(roundedBitmap)
+                .setStyle(style)
+                .build()
         }
     }
+
+    private fun getBigTextNotificationStyle(
+        body: String?
+    ) = NotificationCompat
+        .BigTextStyle()
+        .bigText(body)
+
+    private fun getBigPictureNotificationStyle(
+        bitmap: Bitmap?
+    ) = NotificationCompat
+        .BigPictureStyle()
+        .bigPicture(bitmap)
+        .bigLargeIcon(null)
 
     private fun showNotification(
         context: Context,
@@ -141,13 +151,22 @@ class LocalNotificationShowWorker(
         val channelName = context.getString(R.string.default_notification_channel_name)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
-            channel.setShowBadge(true)
-            channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            val channel = NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                setShowBadge(true)
+                lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            }
             notificationManager.createNotificationChannel(channel)
-            notificationManager.notify(notificationID, notification)
         }
 
         notificationManager.notify(notificationID, notification)
+    }
+
+    private suspend fun deleteWorkerId(id: UUID) {
+        AppDataStoreImpl(context.dataStore)
+            .deleteWorkerId(id = id)
     }
 }

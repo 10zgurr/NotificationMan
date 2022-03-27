@@ -2,9 +2,11 @@ package com.notification.man
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.notification.man.databinding.ActivityMainBinding
 import com.notificationman.library.NotificationMan
-import com.notificationman.library.NotificationTypes
+import com.notificationman.library.model.NotificationTypes
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,22 +23,44 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.buttonFire.setOnClickListener {
-            fireNotificationMan()
+            val classPath = "com.notification.man.MainActivity"
+            val title = binding.editTextTitle.text.toString().trim()
+            val desc = binding.editTextDesc.text.toString().trim()
+            val timeInterval = binding.editTextTimeInterval.text.toString().trim().toLongOrNull()
+            fireNotificationMan(
+                classPath = classPath,
+                title = title,
+                desc = desc,
+                timeInterval = timeInterval
+            )
+        }
+
+        binding.buttonCoolDownLast.setOnClickListener {
+            lifecycleScope.launch {
+                NotificationMan.coolDownLatestFire(this@MainActivity)
+            }
+        }
+
+        binding.buttonCoolDownAll.setOnClickListener {
+            lifecycleScope.launch {
+                NotificationMan.coolDownAllFires(this@MainActivity)
+            }
         }
     }
 
-    private fun fireNotificationMan() {
-        val classPath = "com.notification.man.MainActivity" // make sure class path match with your project architecture
-        val title = binding.editTextTitle.text.toString().trim()
-        val desc = binding.editTextDesc.text.toString().trim()
-        val timeInterval = binding.editTextTimeInterval.text.toString().trim().toLongOrNull()
+    private fun fireNotificationMan(
+        classPath: String,
+        title: String?,
+        desc: String?,
+        timeInterval: Long?,
+    ) {
         NotificationMan
             .Builder(this, classPath)
-            .setTitle(title) // optional
-            .setDescription(desc) // optional
-            .setThumbnailUrl(THUMBNAIL_URL) // optional
-            .setTimeInterval(timeInterval) // needs secs - default is 5 secs
-            .setNotificationType(NotificationTypes.IMAGE.type) // optional - default type is TEXT
+            .setTitle(title)
+            .setDescription(desc)
+            .setThumbnailUrl(THUMBNAIL_URL)
+            .setTimeInterval(timeInterval)
+            .setNotificationType(NotificationTypes.IMAGE.type)
             .fire()
     }
 }
