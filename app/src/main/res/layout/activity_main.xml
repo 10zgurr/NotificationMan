@@ -6,7 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="40dp"
+        android:layout_margin="16dp"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -37,8 +37,26 @@
             android:id="@+id/button_fire"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:text="Fire"
+            android:textColor="@android:color/black" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_cool_down_last"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:text="Cool Down Last"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_cool_down_all"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Cool Down All"
+            android:textAllCaps="false"
             android:textColor="@android:color/black" />
 
     </LinearLayout>

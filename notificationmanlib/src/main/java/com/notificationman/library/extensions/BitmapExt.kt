@@ -1,4 +1,4 @@
-package com.notificationman.library.utils
+package com.notificationman.library.extensions
 
 import android.graphics.*
 import java.io.IOException

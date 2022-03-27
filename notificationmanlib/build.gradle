@@ -6,7 +6,7 @@ android {
     buildToolsVersion '30.0.3'
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 31
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -28,6 +28,18 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    testOptions {
+        animationsDisabled = true
+    }
+
+    packagingOptions {
+        exclude 'win32-x86/attach_hotspot_windows.dll'
+        exclude 'win32-x86-64/attach_hotspot_windows.dll'
+        exclude 'META-INF/licenses/ASM'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+    }
 }
 
 dependencies {
@@ -35,6 +47,9 @@ dependencies {
 
     // kotlin stdlib
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // coroutines test
+    androidTestImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2'
 
     // androidx
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -45,7 +60,13 @@ dependencies {
     // junit
     testImplementation 'junit:junit:4.13.2'
 
-    // WorkManager
+    // work manager
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
     androidTestImplementation 'androidx.work:work-testing:2.7.1'
+
+    // data store
+    implementation 'androidx.datastore:datastore-preferences:1.0.0'
+
+    // gson
+    implementation 'com.google.code.gson:gson:2.9.0'
 }

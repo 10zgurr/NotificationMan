@@ -3,13 +3,16 @@ package com.notificationman.library.worker
 import android.content.Context
 import android.util.Log
 import androidx.work.*
-import com.notificationman.library.NotificationTypes
+import com.notificationman.library.datastore.AppDataStoreImpl
+import com.notificationman.library.extensions.dataStore
+import com.notificationman.library.model.NotificationTypes
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class LocalNotificationPostWorker(
     private val context: Context,
     workerParams: WorkerParameters
-) : Worker(context, workerParams) {
+) : CoroutineWorker(context, workerParams) {
 
     companion object {
         private const val TAG = "LNPostWorker"
@@ -24,7 +27,7 @@ class LocalNotificationPostWorker(
         const val TYPE_KEY = "type_key"
     }
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
         return try {
             enqueueNotification()
             Result.success()
@@ -34,7 +37,7 @@ class LocalNotificationPostWorker(
         }
     }
 
-    private fun enqueueNotification() {
+    private suspend fun enqueueNotification() {
         val classPath = inputData.getString(CLASS_PATH_KEY)
         val title = inputData.getString(TITLE_KEY)
         val desc = inputData.getString(DESC_KEY)
@@ -52,6 +55,12 @@ class LocalNotificationPostWorker(
             .setInitialDelay(timeInternal, TimeUnit.SECONDS)
             .setInputData(data.build())
             .build()
+        saveWorkerId(id = localNotifShowWorkRequest.id)
         WorkManager.getInstance(context).enqueue(localNotifShowWorkRequest)
+    }
+
+    private suspend fun saveWorkerId(id: UUID) {
+        AppDataStoreImpl(context.dataStore)
+            .saveWorkerId(id = id)
     }
 }

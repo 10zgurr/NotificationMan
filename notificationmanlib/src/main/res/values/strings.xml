@@ -3,4 +3,5 @@
 
     <string name="default_notification_channel_id" translatable="false">notification-man-channel</string>
     <string name="default_notification_channel_name" translatable="false">NotificationMan</string>
+    <string name="notification_man_not_fired_error_message">Notification Man Not Fired - make sure you called .fire() function</string>
 </resources>
