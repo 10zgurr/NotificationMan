@@ -29,11 +29,15 @@ class LocalNotificationShowWorkerTest {
             val title = "fake_title"
             val desc = "fake_desc"
             val timeInterval = 2
+            val channelId = "fake_channel_id"
+            val channelName = "fake_channel_name"
             val input = workDataOf(
                 LocalNotificationPostWorker.CLASS_PATH_KEY to classPath,
                 LocalNotificationPostWorker.TITLE_KEY to title,
                 LocalNotificationPostWorker.DESC_KEY to desc,
-                LocalNotificationPostWorker.TIME_INTERVAL_KEY to timeInterval
+                LocalNotificationPostWorker.TIME_INTERVAL_KEY to timeInterval,
+                LocalNotificationPostWorker.NOTIFICATION_CHANNEL_ID_KEY to channelId,
+                LocalNotificationPostWorker.NOTIFICATION_CHANNEL_NAME_KEY to channelName
             )
 
             val worker = TestListenableWorkerBuilder<LocalNotificationShowWorker>(
@@ -54,10 +58,14 @@ class LocalNotificationShowWorkerTest {
             val title = "fake_title"
             val desc = "fake_desc"
             val timeInterval = 2
+            val channelId = "fake_channel_id"
+            val channelName = "fake_channel_name"
             val input = workDataOf(
                 LocalNotificationPostWorker.TITLE_KEY to title,
                 LocalNotificationPostWorker.DESC_KEY to desc,
-                LocalNotificationPostWorker.TIME_INTERVAL_KEY to timeInterval
+                LocalNotificationPostWorker.TIME_INTERVAL_KEY to timeInterval,
+                LocalNotificationPostWorker.NOTIFICATION_CHANNEL_ID_KEY to channelId,
+                LocalNotificationPostWorker.NOTIFICATION_CHANNEL_NAME_KEY to channelName
             )
 
             val worker = TestListenableWorkerBuilder<LocalNotificationShowWorker>(

@@ -11,6 +11,7 @@ import android.graphics.Bitmap
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat.IMPORTANCE_MAX
 import androidx.work.CoroutineWorker
@@ -20,6 +21,7 @@ import com.notificationman.library.datastore.AppDataStoreImpl
 import com.notificationman.library.extensions.dataStore
 import com.notificationman.library.extensions.getBitmapFromURL
 import com.notificationman.library.extensions.getCroppedBitmap
+import com.notificationman.library.model.NotificationImportanceLevel
 import com.notificationman.library.model.NotificationTypes
 import java.util.*
 
@@ -40,6 +42,15 @@ class LocalNotificationShowWorker(
             val desc = inputData.getString(LocalNotificationPostWorker.DESC_KEY)
             val thumbnailUrl = inputData.getString(LocalNotificationPostWorker.THUMBNAIL_URL_KEY)
             val type = inputData.getInt(LocalNotificationPostWorker.TYPE_KEY, NotificationTypes.TEXT.type)
+
+            val channelId = inputData.getString(LocalNotificationPostWorker.NOTIFICATION_CHANNEL_ID_KEY)!!
+            val channelName = inputData.getString(LocalNotificationPostWorker.NOTIFICATION_CHANNEL_NAME_KEY)!!
+            val importanceLevel = inputData.getInt(
+                LocalNotificationPostWorker.NOTIFICATION_IMPORTANCE_LEVEL_KEY,
+                NotificationImportanceLevel.DEFAULT.level
+            )
+            val showBadge = inputData.getBoolean(
+                LocalNotificationPostWorker.NOTIFICATION_SHOW_BADGE_KEY, true)
             val notification = createNotification(
                 context = context,
                 classPath = classPath!!,
@@ -52,7 +63,11 @@ class LocalNotificationShowWorker(
             showNotification(
                 context = context,
                 notification = notification,
-                notificationID = notificationID
+                notificationID = notificationID,
+                channelId = channelId,
+                channelName = channelName,
+                importanceLevel = importanceLevel,
+                showBadge = showBadge,
             )
             deleteWorkerId(
                 id = workerParams.id
@@ -144,19 +159,21 @@ class LocalNotificationShowWorker(
     private fun showNotification(
         context: Context,
         notification: Notification,
-        notificationID: Int
+        notificationID: Int,
+        channelId: String,
+        channelName: String,
+        importanceLevel: Int,
+        showBadge: Boolean
     ) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channelId = context.getString(R.string.default_notification_channel_id)
-        val channelName = context.getString(R.string.default_notification_channel_name)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
                 channelName,
-                NotificationManager.IMPORTANCE_HIGH
+                getNotificationImportance(level = importanceLevel)
             ).apply {
-                setShowBadge(true)
+                setShowBadge(showBadge)
                 lockscreenVisibility = Notification.VISIBILITY_PUBLIC
             }
             notificationManager.createNotificationChannel(channel)
@@ -169,4 +186,17 @@ class LocalNotificationShowWorker(
         AppDataStoreImpl(context.dataStore)
             .deleteWorkerId(id = id)
     }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun getNotificationImportance(level: Int): Int =
+        when (level) {
+            NotificationImportanceLevel.LOW.level ->
+                NotificationManager.IMPORTANCE_LOW
+            NotificationImportanceLevel.DEFAULT.level ->
+                NotificationManager.IMPORTANCE_DEFAULT
+            NotificationImportanceLevel.HIGH.level ->
+                NotificationManager.IMPORTANCE_HIGH
+            else ->
+                NotificationManager.IMPORTANCE_HIGH
+        }
 }
