@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.notification.man.databinding.ActivityMainBinding
 import com.notificationman.library.NotificationMan
+import com.notificationman.library.config.NotificationManChannelConfig
+import com.notificationman.library.model.NotificationImportanceLevel
 import com.notificationman.library.model.NotificationTypes
 import kotlinx.coroutines.launch
 
@@ -23,12 +25,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.buttonFire.setOnClickListener {
-            val classPath = "com.notification.man.MainActivity"
             val title = binding.editTextTitle.text.toString().trim()
             val desc = binding.editTextDesc.text.toString().trim()
             val timeInterval = binding.editTextTimeInterval.text.toString().trim().toLongOrNull()
             fireNotificationMan(
-                classPath = classPath,
                 title = title,
                 desc = desc,
                 timeInterval = timeInterval
@@ -49,18 +49,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fireNotificationMan(
-        classPath: String,
         title: String?,
         desc: String?,
         timeInterval: Long?,
     ) {
         NotificationMan
-            .Builder(this, classPath)
-            .setTitle(title)
-            .setDescription(desc)
-            .setThumbnailUrl(THUMBNAIL_URL)
-            .setTimeInterval(timeInterval)
-            .setNotificationType(NotificationTypes.IMAGE.type)
+            .Builder(context = this, classPathWillBeOpen = "com.notification.man.MainActivity")
+            .setTitle(title = title)
+            .setDescription(desc = desc)
+            .setThumbnailUrl(thumbnailUrl = THUMBNAIL_URL)
+            .setTimeInterval(timeInterval = timeInterval)
+            .setNotificationType(type = NotificationTypes.IMAGE.type)
+            .setNotificationChannelConfig(config = createNotificationManChannelConfig())
             .fire()
     }
+
+    private fun createNotificationManChannelConfig() =
+        NotificationManChannelConfig
+            .Builder()
+            .setChannelId(id = "notification-man-channel")
+            .setChannelName(name = "custom-channel-name")
+            .setImportanceLevel(level = NotificationImportanceLevel.HIGH)
+            .setShowBadge(shouldShow = true)
+            .build()
 }
