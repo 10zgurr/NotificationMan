@@ -36,6 +36,17 @@ Canceling the latest added worker in the queue:</br>
 Canceling all workers:</br>
 <pre>NotificationMan
         .coolDownAllFires(context)</pre>
+        
+You can also set your custom notification channel configuration. This is optional to set:</br>
+<pre>NotificationManChannelConfig
+        .Builder()
+        .setChannelId(id = "notification-man-channel")
+        .setChannelName(name = "custom-channel-name")
+        .setImportanceLevel(level = NotificationImportanceLevel.HIGH)
+        .setShowBadge(shouldShow = true)
+        .build()</pre> 
+
+<b>***One important note, with Android13, make sure that your app has the post notification permission to have full functionality of the app. You can check example of requesting the permission in this project.***</b>
 
 
 
