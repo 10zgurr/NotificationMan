@@ -1,4 +1,5 @@
-# Notification Man
+# Notification Man [![](https://jitpack.io/v/theozgurr/NotificationMan.svg)](https://jitpack.io/#theozgurr/NotificationMan)
+
 
 This library's superpower is firing scheduled local notifications. Even the app is killed.
 You can easily implement it to your android project:</br>
