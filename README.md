@@ -22,12 +22,13 @@ Add it in the your app dependencies:
 
 Firing:</br>
 <pre>NotificationMan
-        .Builder(context, "the activity's path that you want to open when the notification is clicked")
-        .setTitle("test title") // optional
-        .setDescription("test desc") // optional
-        .setThumbnailUrl("image url") // optional
-        .setTimeInterval(10L) // needs secs - default is 5 secs
-        .setNotificationType(NotificationTypes.IMAGE.type) // optional - default type is TEXT
+        .Builder(context = this, classPathWillBeOpen = "com.notification.man.MainActivity") // the activity's path that you want to open when the notification is clicked
+        .setTitle(title = "test title") // optional
+        .setDescription(desc = "test desc") // optional
+        .setThumbnailUrl(thumbnailUrl = "image url") // optional
+        .setTimeInterval(timeInterval = 10L) // needs secs - default is 5 secs
+        .setNotificationType(type = NotificationTypes.IMAGE.type) // optional - default type is TEXT
+        .setNotificationChannelConfig(config = createNotificationManChannelConfig()) // optional
         .fire()</pre> 
         
 Canceling the latest added worker in the queue:</br>
