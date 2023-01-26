@@ -1,4 +1,4 @@
-# Notification Man [![](https://jitpack.io/v/theozgurr/NotificationMan.svg)](https://jitpack.io/#theozgurr/NotificationMan)
+# NotificationMan [![](https://jitpack.io/v/theozgurr/NotificationMan.svg)](https://jitpack.io/#theozgurr/NotificationMan)
 
 
 This library's superpower is firing scheduled local notifications. Even the app is killed.
