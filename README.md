@@ -48,7 +48,7 @@ You can also set your custom notification channel configuration. This is optiona
         .setShowBadge(shouldShow = true)
         .build()</pre> 
 
-<b>***One important note, with Android13, make sure that your app has the post notification permission to have full functionality of the app. You can check example of requesting the permission in this project.***</b>
+<b>***One important note, with Android13, make sure that your app has the post notification permission to have functionality of the app. You can check requesting the permission in this demo project.***</b>
 
 
 
