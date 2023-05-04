@@ -1,11 +1,14 @@
 # NotificationMan [![](https://jitpack.io/v/theozgurr/NotificationMan.svg)](https://jitpack.io/#theozgurr/NotificationMan)
 
 
-This library's superpower is firing scheduled local notifications. Even the app is killed.
-You can easily implement it to your android project:</br>
-</br>
+This library's superpower is firing scheduled local notifications. Even the app is killed.</br></br>
+Implementation:</br></br>
+
+<b>Groovy .gradle:</b>
+
 Add it in your root build.gradle at the end of repositories:
 </br>
+
 <pre>allprojects {
   repositories {
     ...
@@ -16,11 +19,33 @@ Add it in your root build.gradle at the end of repositories:
 Add it in the your app dependencies:
 </br>
 <pre>dependencies {
+  ...
   implementation 'com.github.theozgurr:NotificationMan:1.0.8'
 }</pre>
 </br>
 
-Firing:</br>
+<b>Kotlin .gradle.kts:</b>
+
+
+Add it in your root build.gradle.kts at the end of repositories:
+</br>
+
+<pre>allprojects {
+  repositories {
+    ...
+    maven(url = "https://jitpack.io")
+    }
+}</pre> 
+
+Add it in the your app dependencies:
+</br>
+<pre>dependencies {
+  ...
+  implementation("com.github.theozgurr:NotificationMan:1.0.8")
+}</pre>
+</br>
+
+Usage:</br>
 <pre>NotificationMan
         .Builder(context = this, classPathWillBeOpen = "com.notification.man.MainActivity") // the activity's path that you want to open when the notification is clicked
         .setTitle(title = "test title") // optional
